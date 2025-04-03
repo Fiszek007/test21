@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: php-app
+    env: docker
+    repo: https://github.com/Fiszek007/test19.git
+    region: oregon
+    plan: free
+    autoDeploy: true

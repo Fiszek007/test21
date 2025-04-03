@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <div class="error"></div>
+        <form method="POST" action="login.php">
+            <div class="form-group">
+                <label for="login">Login</label>
+                <input type="text" id="login" name="login" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Login</button>
+            </div>
+        </form>
+        <div class="form-group">
+            <button type="button" onclick="document.getElementById('registerModal').showModal();">Register</button>
+        </div>
+    </div>
+
+    <dialog id="registerModal">
+        <div class="modal-header">
+            <h2>Register</h2>
+        </div>
+        <button id="closeRegisterModal" class="close-button">&times;</button>
+        <form id="registerForm" method="POST" action="register.php">
+            <label for="login">Username:</label>
+            <input type="text" id="login" name="login" required>
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required>
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <label for="role">Role:</label>
+            <select id="role" name="role" required>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+            </select>
+            <button type="submit">Register</button>
+        </form>
+    </dialog>
+
+    <script>
+        const registerModal = document.getElementById('registerModal');
+        const closeRegisterModal = document.getElementById('closeRegisterModal');
+
+        // Open the registration modal (triggered by a button somewhere else)
+        function openRegisterModal() {
+            registerModal.showModal();
+        }
+
+        // Close the registration modal
+        closeRegisterModal.addEventListener('click', () => {
+            registerModal.close();
+        });
+
+        // Handle registration form submission
+        function registerUser(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const form = document.getElementById('registerForm');
+            const formData = new FormData(form);
+
+            fetch('register.php', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        registerModal.close();
+                    } else {
+                        alert('Error: ' + data.message); // Alert if registration failed
+                    }
+                })
+        }
+    </script>
+</body>
+</html>
